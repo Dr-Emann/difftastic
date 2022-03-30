@@ -4,7 +4,7 @@ use std::path::PathBuf;
 struct TreeSitterParser {
     name: &'static str,
     src_dir: &'static str,
-    extra_files: Vec<&'static str>,
+    extra_files: &'static [&'static str],
 }
 
 impl TreeSitterParser {
@@ -14,7 +14,7 @@ impl TreeSitterParser {
         let mut c_files = vec!["parser.c"];
         let mut cpp_files = vec![];
 
-        for file in &self.extra_files {
+        for &file in self.extra_files {
             if file.ends_with(".c") {
                 c_files.push(file);
             } else {
@@ -52,150 +52,150 @@ impl TreeSitterParser {
     }
 }
 
-fn main() {
-    let parsers = vec![
-        TreeSitterParser {
-            name: "tree-sitter-bash",
-            src_dir: "vendor/tree-sitter-bash-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-c",
-            src_dir: "vendor/tree-sitter-c-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-cpp",
-            src_dir: "vendor/tree-sitter-cpp-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-c-sharp",
-            src_dir: "vendor/tree-sitter-c-sharp-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-clojure",
-            src_dir: "vendor/tree-sitter-clojure-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-commonlisp",
-            src_dir: "vendor/tree-sitter-commonlisp-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-css",
-            src_dir: "vendor/tree-sitter-css-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-dart",
-            src_dir: "vendor/tree-sitter-dart-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-elisp",
-            src_dir: "vendor/tree-sitter-elisp-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-elixir",
-            src_dir: "vendor/tree-sitter-elixir-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-go",
-            src_dir: "vendor/tree-sitter-go-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-haskell",
-            src_dir: "vendor/tree-sitter-haskell-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-janet-simple",
-            src_dir: "vendor/tree-sitter-janet-simple-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-java",
-            src_dir: "vendor/tree-sitter-java-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-javascript",
-            src_dir: "vendor/tree-sitter-javascript-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-json",
-            src_dir: "vendor/tree-sitter-json-src",
-            extra_files: vec![],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-lua",
-            src_dir: "vendor/tree-sitter-lua-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-nix",
-            src_dir: "vendor/tree-sitter-nix-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-ocaml",
-            src_dir: "vendor/tree-sitter-ocaml-src/ocaml/src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-ocaml-interface",
-            src_dir: "vendor/tree-sitter-ocaml-src/interface/src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-php",
-            src_dir: "vendor/tree-sitter-php-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-python",
-            src_dir: "vendor/tree-sitter-python-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-ruby",
-            src_dir: "vendor/tree-sitter-ruby-src",
-            extra_files: vec!["scanner.cc"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-rust",
-            src_dir: "vendor/tree-sitter-rust-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-scala",
-            src_dir: "vendor/tree-sitter-scala-src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-tsx",
-            src_dir: "vendor/tree-sitter-typescript-src/tsx/src",
-            extra_files: vec!["scanner.c"],
-        },
-        TreeSitterParser {
-            name: "tree-sitter-typescript",
-            src_dir: "vendor/tree-sitter-typescript-src/typescript/src",
-            extra_files: vec!["scanner.c"],
-        },
-    ];
+const ALL_PARSERS: &[TreeSitterParser] = &[
+    TreeSitterParser {
+        name: "tree-sitter-bash",
+        src_dir: "vendor/tree-sitter-bash-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-c",
+        src_dir: "vendor/tree-sitter-c-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-cpp",
+        src_dir: "vendor/tree-sitter-cpp-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-c-sharp",
+        src_dir: "vendor/tree-sitter-c-sharp-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-clojure",
+        src_dir: "vendor/tree-sitter-clojure-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-commonlisp",
+        src_dir: "vendor/tree-sitter-commonlisp-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-css",
+        src_dir: "vendor/tree-sitter-css-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-dart",
+        src_dir: "vendor/tree-sitter-dart-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-elisp",
+        src_dir: "vendor/tree-sitter-elisp-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-elixir",
+        src_dir: "vendor/tree-sitter-elixir-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-go",
+        src_dir: "vendor/tree-sitter-go-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-haskell",
+        src_dir: "vendor/tree-sitter-haskell-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-janet-simple",
+        src_dir: "vendor/tree-sitter-janet-simple-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-java",
+        src_dir: "vendor/tree-sitter-java-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-javascript",
+        src_dir: "vendor/tree-sitter-javascript-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-json",
+        src_dir: "vendor/tree-sitter-json-src",
+        extra_files: &[],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-lua",
+        src_dir: "vendor/tree-sitter-lua-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-nix",
+        src_dir: "vendor/tree-sitter-nix-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-ocaml",
+        src_dir: "vendor/tree-sitter-ocaml-src/ocaml/src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-ocaml-interface",
+        src_dir: "vendor/tree-sitter-ocaml-src/interface/src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-php",
+        src_dir: "vendor/tree-sitter-php-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-python",
+        src_dir: "vendor/tree-sitter-python-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-ruby",
+        src_dir: "vendor/tree-sitter-ruby-src",
+        extra_files: &["scanner.cc"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-rust",
+        src_dir: "vendor/tree-sitter-rust-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-scala",
+        src_dir: "vendor/tree-sitter-scala-src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-tsx",
+        src_dir: "vendor/tree-sitter-typescript-src/tsx/src",
+        extra_files: &["scanner.c"],
+    },
+    TreeSitterParser {
+        name: "tree-sitter-typescript",
+        src_dir: "vendor/tree-sitter-typescript-src/typescript/src",
+        extra_files: &["scanner.c"],
+    },
+];
 
+fn main() {
     // Only rerun if relevant files in the vendor/ directory change.
     println!("cargo:rerun-if-changed=vendor/highlights");
-    for parser in &parsers {
+    for parser in ALL_PARSERS {
         println!("cargo:rerun-if-changed={}", parser.src_dir);
     }
 
-    parsers.par_iter().for_each(|p| p.build());
+    ALL_PARSERS.par_iter().for_each(TreeSitterParser::build);
 }
