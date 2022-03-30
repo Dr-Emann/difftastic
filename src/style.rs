@@ -23,25 +23,18 @@ impl BackgroundColor {
     }
 }
 
-/// Slice `s` from `start` inclusive to `end` exclusive by codepoint. This is safer than
-/// slicing by bytes, which panics if the byte isn't on a codepoint
-/// boundary.
-fn substring_by_codepoint(s: &str, start: usize, end: usize) -> &str {
-    if start == end {
-        return &s[0..0];
+/// Split `s` at the `i`th codepoint (if there is one).
+///
+/// Returns (the first `i` chars, the rest of the string), iff there is a `i`th char.
+fn split_at_codepoint(s: &str, i: usize) -> Option<(&str, &str)> {
+    if s.len() < i {
+        // There's no way there's a `split`th codepoint, each is at _least_ one byte
+        return None;
     }
-
-    assert!(end > start);
 
     let mut char_idx_iter = s.char_indices();
-    let byte_start = char_idx_iter
-        .nth(start)
-        .expect("Expected a codepoint index inside `s`.")
-        .0;
-    match char_idx_iter.nth(end - start - 1) {
-        Some(byte_end) => &s[byte_start..byte_end.0],
-        None => &s[byte_start..],
-    }
+    let byte_offset = char_idx_iter.nth(i)?.0;
+    Some(s.split_at(byte_offset))
 }
 
 fn substring_by_byte(s: &str, start: usize, end: usize) -> &str {
@@ -55,12 +48,14 @@ fn substring_by_byte(s: &str, start: usize, end: usize) -> &str {
 /// split_string_by_codepoint("fooba", 3) // vec!["foo", "ba "]
 /// ```
 fn split_string_by_codepoint(s: &str, max_len: usize) -> Vec<String> {
+    assert_ne!(max_len, 0);
+
     let mut res = vec![];
     let mut s = s;
 
-    while codepoint_len(s) > max_len {
-        res.push(substring_by_codepoint(s, 0, max_len).into());
-        s = substring_by_codepoint(s, max_len, codepoint_len(s));
+    while let Some((prefix, rest)) = split_at_codepoint(s, max_len) {
+        res.push(prefix.to_string());
+        s = rest;
     }
 
     if res.is_empty() || !s.is_empty() {
@@ -339,6 +334,12 @@ pub fn header(
 mod tests {
     use super::*;
     use pretty_assertions::assert_eq;
+
+    fn substring_by_codepoint(s: &str, start: usize, end: usize) -> &str {
+        let (_, rest) = split_at_codepoint(s, start).unwrap();
+        let (value, _) = split_at_codepoint(rest, end - start).unwrap();
+        value
+    }
 
     #[test]
     fn test_substring_by_codepoint() {
