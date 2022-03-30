@@ -223,16 +223,14 @@ pub fn parse_args() -> Mode {
         } else {
             BackgroundColor::Dark
         }
-    } else {
-        if let Ok(background) = env::var("DFT_BACKGROUND") {
-            if background == "light" {
-                BackgroundColor::Light
-            } else {
-                BackgroundColor::Dark
-            }
+    } else if let Ok(background) = env::var("DFT_BACKGROUND") {
+        if background == "light" {
+            BackgroundColor::Light
         } else {
             BackgroundColor::Dark
         }
+    } else {
+        BackgroundColor::Dark
     };
 
     let node_limit: u32 = if matches.occurrences_of("node-limit") == 0 {

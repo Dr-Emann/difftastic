@@ -224,12 +224,10 @@ pub fn novel_style(style: Style, is_lhs: bool, background: BackgroundColor) -> S
         } else {
             style.bright_green()
         }
+    } else if is_lhs {
+        style.red()
     } else {
-        if is_lhs {
-            style.red()
-        } else {
-            style.green()
-        }
+        style.green()
     }
 }
 
