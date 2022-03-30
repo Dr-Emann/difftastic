@@ -136,10 +136,7 @@ fn push_both_delimiters<'a>(
 }
 
 fn can_pop_either_parent(entered: &Stack<EnteredDelimiter>) -> bool {
-    match entered.peek() {
-        Some(EnteredDelimiter::PopEither(_)) => true,
-        _ => false,
-    }
+    matches!(entered.peek(), Some(EnteredDelimiter::PopEither(_)))
 }
 
 fn try_pop_both<'a>(
