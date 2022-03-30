@@ -352,11 +352,17 @@ mod tests {
 
     #[test]
     fn split_string_simple() {
+        assert_eq!(split_string_by_codepoint("", 3), vec!["   "]);
+        assert_eq!(split_string_by_codepoint("f", 3), vec!["f  "]);
+        assert_eq!(split_string_by_codepoint("foo", 3), vec!["foo"]);
         assert_eq!(split_string_by_codepoint("fooba", 3), vec!["foo", "ba "]);
+        assert_eq!(split_string_by_codepoint("foobar", 3), vec!["foo", "bar"]);
     }
 
     #[test]
     fn split_string_unicode() {
+        assert_eq!(split_string_by_codepoint("📦", 3), vec!["📦  "]);
+        assert_eq!(split_string_by_codepoint("ab📦de", 3), vec!["ab📦", "de "]);
         assert_eq!(split_string_by_codepoint("ab📦def", 3), vec!["ab📦", "def"]);
     }
 
