@@ -35,7 +35,7 @@ pub struct TreeSitterConfig {
     /// We want to consider delimiter tokens as part of lists, not
     /// standalone atoms. Tree-sitter includes delimiter tokens, so
     /// mark which token pairs we consider to be delimiters.
-    delimiter_tokens: Vec<(&'static str, &'static str)>,
+    delimiter_tokens: &'static [(&'static str, &'static str)],
 
     /// Tree-sitter query used for syntax highlighting this
     /// language.
@@ -93,7 +93,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["string", "raw_string", "heredoc_body"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![("(", ")"), ("{", "}"), ("[", "]")]),
+                delimiter_tokens: &[("(", ")"), ("{", "}"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/bash.scm"),
@@ -109,7 +109,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["string_literal", "char_literal"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![("(", ")"), ("{", "}"), ("[", "]")]),
+                delimiter_tokens: &[("(", ")"), ("{", "}"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/c.scm"),
@@ -127,7 +127,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["string_literal", "char_literal"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![("(", ")"), ("{", "}"), ("[", "]"), ("<", ">")]),
+                delimiter_tokens: &[("(", ")"), ("{", "}"), ("[", "]"), ("<", ">")],
                 highlight_query: ts::Query::new(
                     language,
                     concat!(
@@ -144,9 +144,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Clojure",
                 language,
                 atom_nodes: (vec![]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")"), ("[", "]")])
-                    .into_iter()
-                    .collect(),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/clojure.scm"),
@@ -160,7 +158,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Common Lisp",
                 language,
                 atom_nodes: (vec!["str_lit", "char_lit"]).into_iter().collect(),
-                delimiter_tokens: (vec![("(", ")")]),
+                delimiter_tokens: &[("(", ")")],
                 highlight_query: ts::Query::new(language, "").unwrap(),
             }
         }
@@ -176,7 +174,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 ])
                 .into_iter()
                 .collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")")]),
+                delimiter_tokens: &[("{", "}"), ("(", ")")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/c-sharp.scm"),
@@ -190,7 +188,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "CSS",
                 language,
                 atom_nodes: (vec!["integer_value", "float_value"]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")")]),
+                delimiter_tokens: &[("{", "}"), ("(", ")")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/css.scm"),
@@ -204,7 +202,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Dart",
                 language,
                 atom_nodes: (vec!["string_literal", "script_tag"]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")]),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/dart.scm"),
@@ -218,9 +216,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Emacs Lisp",
                 language,
                 atom_nodes: (vec![]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")"), ("[", "]")])
-                    .into_iter()
-                    .collect(),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/elisp.scm"),
@@ -234,9 +230,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Elixir",
                 language,
                 atom_nodes: (vec!["string", "heredoc"]).into_iter().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("{", "}"), ("do", "end")])
-                    .into_iter()
-                    .collect(),
+                delimiter_tokens: &[("(", ")"), ("{", "}"), ("do", "end")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/elixir.scm"),
@@ -252,9 +246,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["interpreted_string_literal", "raw_string_literal"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![("{", "}"), ("[", "]"), ("(", ")")])
-                    .into_iter()
-                    .collect(),
+                delimiter_tokens: &[("{", "}"), ("[", "]"), ("(", ")")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/go.scm"),
@@ -268,7 +260,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Haskell",
                 language,
                 atom_nodes: (vec![]).into_iter().collect(),
-                delimiter_tokens: (vec![("[", "]"), ("(", ")")]),
+                delimiter_tokens: &[("[", "]"), ("(", ")")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/haskell.scm"),
@@ -282,16 +274,14 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Janet",
                 language,
                 atom_nodes: (vec![]).into_iter().collect(),
-                delimiter_tokens: (vec![
+                delimiter_tokens: &[
                     ("@{", "}"),
                     ("@(", ")"),
                     ("@[", "]"),
                     ("{", "}"),
                     ("(", ")"),
                     ("[", "]"),
-                ])
-                .into_iter()
-                .collect(),
+                ],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/janet_simple.scm"),
@@ -305,7 +295,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Java",
                 language,
                 atom_nodes: (vec![]).into_iter().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("{", "}")]),
+                delimiter_tokens: &[("(", ")"), ("{", "}")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/java.scm"),
@@ -321,7 +311,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["string", "template_string", "regex"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![
+                delimiter_tokens: &[
                     ("[", "]"),
                     ("(", ")"),
                     ("{", "}"),
@@ -329,7 +319,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                     // like 1 < 2, but we should never see both a < and a
                     // > at the same level in JSX.
                     ("<", ">"),
-                ]),
+                ],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/javascript.scm"),
@@ -343,7 +333,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "JSON",
                 language,
                 atom_nodes: (vec!["string"]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("[", "]")]),
+                delimiter_tokens: &[("{", "}"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/json.scm"),
@@ -357,9 +347,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Lua",
                 language,
                 atom_nodes: (vec!["string"]).into_iter().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("{", "}"), ("[", "]")])
-                    .into_iter()
-                    .collect(),
+                delimiter_tokens: &[("(", ")"), ("{", "}"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/lua.scm"),
@@ -375,7 +363,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: vec!["string_expression", "indented_string_expression"]
                     .into_iter()
                     .collect(),
-                delimiter_tokens: vec![("{", "}"), ("[", "]")].into_iter().collect(),
+                delimiter_tokens: &[("{", "}"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/nix.scm"),
@@ -389,7 +377,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "OCaml",
                 language,
                 atom_nodes: OCAML_ATOM_NODES.iter().copied().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("[", "]"), ("{", "}")]),
+                delimiter_tokens: &[("(", ")"), ("[", "]"), ("{", "}")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/ocaml.scm"),
@@ -403,7 +391,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "OCaml Interface",
                 language,
                 atom_nodes: OCAML_ATOM_NODES.iter().copied().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("[", "]"), ("{", "}")]),
+                delimiter_tokens: &[("(", ")"), ("[", "]"), ("{", "}")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/ocaml.scm"),
@@ -417,7 +405,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "PHP",
                 language,
                 atom_nodes: (vec!["string"]).into_iter().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("[", "]"), ("{", "}")]),
+                delimiter_tokens: &[("(", ")"), ("[", "]"), ("{", "}")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/php.scm"),
@@ -431,7 +419,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Python",
                 language,
                 atom_nodes: (vec!["string"]).into_iter().collect(),
-                delimiter_tokens: (vec![("(", ")"), ("[", "]"), ("{", "}")]),
+                delimiter_tokens: &[("(", ")"), ("[", "]"), ("{", "}")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/python.scm"),
@@ -447,7 +435,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["string", "heredoc_body", "regex"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![
+                delimiter_tokens: &[
                     ("{", "}"),
                     ("(", ")"),
                     ("[", "]"),
@@ -455,7 +443,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                     ("def", "end"),
                     ("begin", "end"),
                     ("class", "end"),
-                ]),
+                ],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/ruby.scm"),
@@ -471,13 +459,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["char_literal", "string_literal"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![
-                    ("{", "}"),
-                    ("(", ")"),
-                    ("[", "]"),
-                    ("|", "|"),
-                    ("<", ">"),
-                ]),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]"), ("|", "|"), ("<", ">")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/rust.scm"),
@@ -491,7 +473,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "Scala",
                 language,
                 atom_nodes: (vec!["string", "template_string"]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")"), ("[", "]")]),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]")],
                 highlight_query: ts::Query::new(
                     language,
                     include_str!("../vendor/highlights/scala.scm"),
@@ -507,7 +489,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 atom_nodes: (vec!["string", "template_string", "regex"])
                     .into_iter()
                     .collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")]),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")],
                 highlight_query: ts::Query::new(
                     language,
                     concat!(
@@ -524,7 +506,7 @@ pub fn from_language(language: guess::Language) -> TreeSitterConfig {
                 name: "TypeScript TSX",
                 language,
                 atom_nodes: (vec!["string", "template_string"]).into_iter().collect(),
-                delimiter_tokens: (vec![("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")]),
+                delimiter_tokens: &[("{", "}"), ("(", ")"), ("[", "]"), ("<", ">")],
                 highlight_query: ts::Query::new(
                     language,
                     concat!(
