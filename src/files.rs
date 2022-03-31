@@ -60,17 +60,46 @@ pub fn read_or_die(path: &Path) -> Vec<u8> {
     }
 }
 
+struct InvalidUtf8Chars<'a> {
+    bytes: &'a [u8],
+}
+
+impl<'a> InvalidUtf8Chars<'a> {
+    fn new(bytes: &'a [u8]) -> Self {
+        Self { bytes }
+    }
+}
+
+impl<'a> Iterator for InvalidUtf8Chars<'a> {
+    type Item = &'a [u8];
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match std::str::from_utf8(self.bytes) {
+            Ok(_) => {
+                self.bytes = &[];
+                None
+            }
+            Err(err) => {
+                self.bytes = &self.bytes[err.valid_up_to()..];
+                let bad_len = err.error_len().unwrap_or(self.bytes.len());
+                let res = &self.bytes[..bad_len];
+                self.bytes = &self.bytes[bad_len..];
+                Some(res)
+            }
+        }
+    }
+}
+
 /// Do these bytes look like a binary (non-textual) format?
 pub fn is_probably_binary(bytes: &[u8]) -> bool {
     // If more than 20 of the first 1,000 characters are not valid
     // UTF-8, we assume it's binary.
-    let num_replaced = String::from_utf8_lossy(bytes)
-        .to_string()
-        .chars()
-        .take(1000)
-        .filter(|c| *c == std::char::REPLACEMENT_CHARACTER)
-        .count();
-    num_replaced > 20
+    const MAX_NON_UTF8: usize = 20;
+    const MAX_BYTES: usize = 1000;
+
+    let bytes = &bytes[..bytes.len().min(MAX_BYTES)];
+    // Take one more, so we know if there are _over_ the max number of invalid chars
+    InvalidUtf8Chars::new(bytes).take(MAX_NON_UTF8 + 1).count() > MAX_NON_UTF8
 }
 
 #[cfg(test)]
