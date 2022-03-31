@@ -41,6 +41,7 @@ const_format = "0.2.22"
 owo-colors = "3.2.0"
 rpds = "0.10.0"
 wu-diff = "0.1.2"
+phf = { version = "0.10.1", features = ["macros"] }
 
 [dev-dependencies]
 pretty_assertions = "1.0.0"
